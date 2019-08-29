@@ -1,0 +1,8 @@
+environments:
+  default:
+    values:
+      - ../helmfile-values.yaml
+
+helmDefaults:
+  tillerNamespace: helm
+  tillerless: true

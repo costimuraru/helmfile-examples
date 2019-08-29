@@ -1,0 +1,29 @@
+image:
+  repository: gcr.io/heptio-images/velero
+  tag: v1.0.0
+
+rbac:
+  create: true
+
+schedules:
+  backup:
+    schedule: {{ .Environment.Values.helm | getOrNil "velero.backupSchedule" | default "0 0 * * *" }}
+    template:
+      ttl: {{ .Environment.Values.helm | getOrNil "velero.backupTTL" | default "240h" }}
+
+podAnnotations:
+  iam.amazonaws.com/role: {{ .Environment.Values.helm.velero.iam_role }}
+
+configuration:
+  provider: aws
+  volumeSnapshotLocation:
+    name: aws
+    config:
+     region: {{ .Environment.Values.helm.velero.region }}
+  backupStorageLocation:
+    name: aws
+    bucket: {{ .Environment.Values.helm.velero.bucket }}
+    prefix: {{ .Environment.Values.helm | getOrNil "velero.backupPrefix" | default "veleroBackup" }}
+    config:
+      region: {{ .Environment.Values.helm.velero.region }}
+

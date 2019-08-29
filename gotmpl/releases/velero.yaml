@@ -1,0 +1,17 @@
+---
+bases:
+  - ../commons/environments.yaml
+---
+releases:
+  - name: "velero"
+    namespace: "velero"
+    labels:
+      chart: "velero"
+      repo: "stable"
+      component: "rbac"
+    chart: "stable/velero"
+    version: {{ .Environment.Values.helm.velero.version }}
+    wait: true
+    installed: {{ .Environment.Values.helm | getOrNil "velero.enabled" | default true }}
+    values:
+      - velero-values.yaml.gotmpl
