@@ -1,0 +1,7 @@
+environments:
+  aws:
+    values:
+      - envs/aws-env.yaml
+  azure:
+    values:
+      - envs/azure-env.yaml

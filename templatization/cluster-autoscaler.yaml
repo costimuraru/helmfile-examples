@@ -1,0 +1,35 @@
+---
+bases:
+  - envs/environments.yaml
+---
+releases:
+- name: "cluster-autoscaler"
+  namespace: "cluster-autoscaler"
+  labels:
+    chart: "cluster-autoscaler"
+    repo: "stable"
+    component: "autoscaler"
+  chart: "stable/cluster-autoscaler"
+  version: {{ .Environment.Values.helm.autoscaler.version }}
+  wait: true
+  installed: {{ .Environment.Values | getOrNil "autoscaler.enabled" | default true }}
+  set:
+    - name: rbac.create
+      value: true
+{{ if eq .Environment.Values.helm.autoscaler.cloud "aws" }}
+    - name: "cloudProvider"
+      value: "aws"
+    - name: "autoDiscovery.clusterName"
+      value: {{ .Environment.Values.helm.autoscaler.clusterName }}
+    - name: awsRegion
+      value: {{ .Environment.Values.helm.autoscaler.aws.region }}
+    - name: "podAnnotations.iam\\.amazonaws\\.com\\/role"
+      value: {{ .Environment.Values.helm.autoscaler.aws.arn }}
+{{ else if eq .Environment.Values.helm.autoscaler.cloud "azure" }}
+    - name: "cloudProvider"
+      value: "azure"
+    - name: azureClientID
+      value: {{ .Environment.Values.helm.autoscaler.azure.clientId }}
+    - name: azureClientSecret
+      value: {{ .Environment.Values.helm.autoscaler.azure.clientSecret }}
+{{ end }}

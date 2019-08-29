@@ -1,0 +1,10 @@
+---
+bases:
+  - envs/environments.yaml
+
+---
+# Ordered list of releases.
+helmfiles:
+#  - "nginx-ingress.yaml"
+#  - "velero/velero.yaml"
+  - "cluster-autoscaler.yaml"

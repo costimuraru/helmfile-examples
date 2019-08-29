@@ -1,0 +1,8 @@
+helm:
+  autoscaler:
+    cloud: aws
+    version: 0.14.2
+    clusterName: experiments-k8s-cluster
+    aws:
+      arn: arn:aws:iam::00000000000:role/experiments-k8s-cluster-autoscaler
+      region: us-east-1

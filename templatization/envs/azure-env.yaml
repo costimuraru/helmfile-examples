@@ -1,0 +1,7 @@
+helm:
+  autoscaler:
+    cloud: azure
+    version: 0.14.2
+    azure:
+      clientId: "secret-value-here"
+      clientSecret: "secret-value-here"
